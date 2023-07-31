@@ -113,7 +113,7 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     dix = pd.to_datetime(data.index)
     dates = dix.date
 
-    lastmove = close.shift(1).values - close.values
+    lastmove = close.shift(2).values - close.shift(1).values
     # times in row
     # Calculate the "X times in row" indicator
     x_in_row = []

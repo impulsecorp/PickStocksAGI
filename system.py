@@ -98,8 +98,8 @@ def objective(s):
 
 
 # keyword parameters nearly always the same
-btkw = dict(commission=.000, margin=1.0, trade_on_close=False, exclusive_orders=True)
-optkw = dict(method='grid', max_tries=max_tries, maximize=objective, return_heatmap=True)
+# btkw = dict(commission=.000, margin=1.0, trade_on_close=False, exclusive_orders=True)
+# optkw = dict(method='grid', max_tries=max_tries, maximize=objective, return_heatmap=True)
 
 
 def get_optdata(results, consts):
