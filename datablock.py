@@ -108,7 +108,6 @@ def compute_custom_features(data, open_, high, low, close, uchar):
 def calc_increases(vals):
     # Initialize the result array with zeros
     result = np.zeros(len(vals), dtype=int)
-
     # Iterate through the array starting from the second element
     for i in range(1, len(vals)):
         # If the current element is greater than the previous one
@@ -116,7 +115,18 @@ def calc_increases(vals):
             # Increment the previous increase count
             result[i] = result[i - 1] + 1
         # If not, leave as zero (a decrease or no change in value)
+    return result
 
+def calc_decreases(vals):
+    # Initialize the result array with zeros
+    result = np.zeros(len(vals), dtype=int)
+    # Iterate through the array starting from the second element
+    for i in range(1, len(vals)):
+        # If the current element is smaller than the previous one
+        if vals[i] < vals[i - 1]:
+            # Increment the previous decrease count
+            result[i] = result[i - 1] + 1
+        # If not, leave as zero (an increase or no change in value)
     return result
 
 def compute_custom_features_llm(data, open_, high, low, close, uchar):
@@ -127,10 +137,9 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     dix = pd.to_datetime(data.index)
     dates = dix.date
 
-    lastmove = -(close.shift(1).values - close.shift(0).values)
+    lastmove = close.values
     data['Times in a row Up'] = calc_increases(lastmove)
-    lastmove = (close.shift(1).values - close.shift(0).values)
-    data['Times in a row Down'] = calc_increases(lastmove)
+    data['Times in a row Down'] = calc_decreases(lastmove)
 
 
 
