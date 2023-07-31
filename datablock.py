@@ -108,45 +108,12 @@ def compute_custom_features(data, open_, high, low, close, uchar):
 def compute_custom_features_llm(data, open_, high, low, close, uchar):
     # Some datetime features for good measure
     data['Day of week'] = data.index.dayofweek
-    # if not data.daily:
-    #     data['Hour of day'] = data.index.hour
     # Additional custom features
     # Convert the index to datetime and create a temporary date variable
     dix = pd.to_datetime(data.index)
     dates = dix.date
 
-    # Calculate the "overnight move" indicator
-    # overnight_move = []
-    # last_open = None
-    # overnight = 0
-    # for i, (xopen_, date) in enumerate(zip(open_.values, dates)):
-    #     if (i > 0) and (date != dates[i - 1]):
-    #         overnight = xopen_ - last_open
-    #     overnight_move.append(overnight)
-    #     last_open = xopen_
-    #     # Add the "overnight move" column to the DataFrame
-    # data['Overnight price move'] = overnight_move
-
-    # b = open_.values[1:] - open_.values[0:-1]
-    # b = np.hstack([np.zeros(1), b])
-    # data['X' + uchar + 'open_move'] = b
-    # b = high.shift(1).values[1:] - high.shift(1).values[0:-1]
-    # b = np.hstack([np.zeros(1), b])
-    # data['X' + uchar + 'high_move'] = b
-    # b = low.shift(1).values[1:] - low.shift(1).values[0:-1]
-    # b = np.hstack([np.zeros(1), b])
-    # data['X' + uchar + 'low_move'] = b
-    # b = close.shift(1).values[1:] - close.shift(1).values[0:-1]
-    # b = np.hstack([np.zeros(1), b])
-    # data['X' + uchar + 'close_move'] = b
-    #
-
-    # lastmove = close.shift(1).values - open_.shift(1).values
-    lastmove = close.values - open_.values
-    # data['Last price move'] = b
-    # b = high.shift(1).values - low.shift(1).values
-    # data['Last High-Low span'] = b
-
+    lastmove = close.shift(1).values - close.values
     # times in row
     # Calculate the "X times in row" indicator
     x_in_row = []
@@ -187,14 +154,6 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     # Add the "X times in row" column to the DataFrame
     data['Times in a row Down'] = x_in_row
 
-    # # Compute the overnight move direction
-    # data['Direction of overnight move'] = np.where(data['Overnight price move'] > 0, 1, -1)
-    #
-    # # Compute yesterday's close-to-open move
-    # yesterday_close = close.shift(1)
-    # yesterday_open = open_.shift(1)
-    #
-    # data["Yesterday's Close-to-Open move"] = yesterday_open - yesterday_close
 
 
 
