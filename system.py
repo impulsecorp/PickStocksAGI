@@ -923,9 +923,9 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
     current_profit = 0
 
     if quiet:
-        theiter = range(1, len(data))
+        theiter = range(1, len(data)-1)
     else:
-        theiter = tqdm(range(1, len(data)))
+        theiter = tqdm(range(1, len(data)-1))
     for idx in theiter:
         current_time = data.index[idx].time()
         if not data.daily:
@@ -942,8 +942,8 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
 
         action, confidence = strategy.next(idx, data)
 
-        entry_price = data.iloc[idx]['Open']
-        exit_price = data.iloc[idx]['Close']
+        entry_price = data.iloc[idx+1]['Open']
+        exit_price = data.iloc[idx+1]['Close']
 
         shares = int(position_value / entry_price)
 
