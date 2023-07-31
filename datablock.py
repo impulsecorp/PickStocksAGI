@@ -153,7 +153,7 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     count = 0
     last_move = 0
     last_date = None
-    for i, move in enumerate(lastmove.values):
+    for i, move in enumerate(lastmove):
         if move * last_move > 0 and move != 0:
             count += 1
         else:
@@ -172,7 +172,7 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     count = 0
     last_move = 0
     last_date = None
-    for i, move in enumerate(lastmove.values):
+    for i, move in enumerate(lastmove):
         if move * last_move < 0 and move != 0:
             count += 1
         else:
