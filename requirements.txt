@@ -1,0 +1,15 @@
+pandas_ta
+tsfel
+empyrical
+gym
+tqdm
+scikit-learn
+matplotlib
+hyperopt
+xgboost 
+catboost 
+lightgbm
+gplearn
+imbalanced-learn
+deap
+dask
