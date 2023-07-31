@@ -127,9 +127,9 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     dix = pd.to_datetime(data.index)
     dates = dix.date
 
-    lastmove = -(close.shift(1).values - close.values)
+    lastmove = -(close.shift(0).values - close.shift(-1).values)
     data['Times in a row Up'] = calc_increases(lastmove)
-    lastmove = (close.shift(1).values - close.values)
+    lastmove = (close.shift(0).values - close.shift(-1).values)
     data['Times in a row Down'] = calc_increases(lastmove)
 
 
