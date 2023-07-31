@@ -141,7 +141,8 @@ def compute_custom_features_llm(data, open_, high, low, close, uchar):
     # data['X' + uchar + 'close_move'] = b
     #
 
-    lastmove = close.shift(1).values - open_.shift(1).values
+    # lastmove = close.shift(1).values - open_.shift(1).values
+    lastmove = close.values - open_.values
     # data['Last price move'] = b
     # b = high.shift(1).values - low.shift(1).values
     # data['Last High-Low span'] = b
