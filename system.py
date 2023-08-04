@@ -924,9 +924,9 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
     current_profit = 0
 
     if quiet:
-        theiter = range(1, len(data)-1)
+        theiter = range(0, len(data)-1)
     else:
-        theiter = tqdm(range(1, len(data)-1))
+        theiter = tqdm(range(0, len(data)-1))
     for idx in theiter:
         current_time = data.index[idx].time()
         if not data.daily:
