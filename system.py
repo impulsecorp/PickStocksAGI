@@ -917,7 +917,8 @@ market_end_time = pd.Timestamp("16:00:00").time()
 
 
 def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test=1,
-                             commission=0.0, slippage=0.0, position_value=100000, quiet=0):
+                             commission=0.0, slippage=0.0, position_value=100000, quiet=0,
+                             enter_on_close=False):
     equity_curve = np.zeros(len(data))
     trades = []
     current_profit = 0
@@ -942,7 +943,10 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
 
         action, confidence = strategy.next(idx, data)
 
-        entry_price = data.iloc[idx+1]['Open']
+        if enter_on_close:
+            entry_price = data.iloc[idx]['Close']
+        else:
+            entry_price = data.iloc[idx+1]['Open']
         exit_price = data.iloc[idx+1]['Close']
 
         shares = int(position_value / entry_price)
