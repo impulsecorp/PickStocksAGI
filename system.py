@@ -967,16 +967,16 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
                 'pos': action,
                 'conf': confidence,
                 'shares': shares,
-                'entry_datetime': data.index[idx],
-                'exit_datetime': data.index[idx],
-                'entry_bar': idx,
-                'exit_bar': idx,
+                'entry_datetime': data.index[idx] if enter_on_close else data.index[idx],
+                'exit_datetime': data.index[idx+1],
+                'entry_bar': idx if enter_on_close else idx+1,
+                'exit_bar': idx+1,
                 'entry_price': entry_price,
                 'exit_price': exit_price,
                 'profit': profit
             })
 
-    return equity_curve, *compute_stats(data, trades)
+    return equity_curve[0:-1], *compute_stats(data, trades)
 
 
 def backtest_strategy_multi(strategy, data_list, skip_train=1, skip_val=0, skip_test=1,
