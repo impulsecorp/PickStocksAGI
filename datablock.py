@@ -605,7 +605,7 @@ def procdata_llm(ddd, use_forex=False, double_underscore=True, cut_first_N=-1,
                         }, axis=1)
 
     data.daily = daily
-    compute_custom_features_llm(data, open_, high, low, close, uchar)
+    # compute_custom_features_llm(data, open_, high, low, close, uchar)
 
     data.replace([np.inf, -np.inf], np.nan, inplace=True)
     data = data.fillna(0).astype(float)
