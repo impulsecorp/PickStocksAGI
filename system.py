@@ -675,10 +675,7 @@ def train_clf_ensemble(clf_classes, data, ensemble_size=1, time_window_size=1, n
     scaler = None
     if scale_data and not (time_window_size > 1):
         scaler = StandardScaler()
-        try:
-            Xt = scaler.fit_transform(X)
-        except:
-            Xt = X
+        Xt = scaler.fit_transform(X)
     else:
         Xt = X
     # if balance_data and not (time_window_size > 1):
