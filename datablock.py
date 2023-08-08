@@ -527,8 +527,7 @@ def procdata_lite(ddd, use_forex=False, double_underscore=True, cut_first_N=-1,
     return data
 
 
-def procdata_llm(ddd, use_forex=False, double_underscore=True, cut_first_N=-1,
-                  with_lagged=0):
+def procdata_llm(ddd, use_forex=False, double_underscore=True, cut_first_N=-1, with_lagged=0):
     global data, dindex
 
     daily = ddd.daily
@@ -546,12 +545,12 @@ def procdata_llm(ddd, use_forex=False, double_underscore=True, cut_first_N=-1,
     def addx(x):
         global data, didx, dindex
         if len(x.shape) > 1:
-            dx = x.rename(lambda k: k.upper(), axis=1)
+            dx = x.rename(lambda k: 'X' + uchar + k.lower() + '_' + uuname(), axis=1)
             data = pd.concat([data, dx], axis=1)
             data.index = dindex
         else:
             didx += 1
-            data[x.name.upper()] = x
+            data['X' + uchar + x.name.lower() + '_' + uuname()] = x
             data.index = dindex
         data.daily = daily
 
