@@ -3,6 +3,8 @@ import os
 
 import warnings
 
+import system
+
 warnings.filterwarnings('ignore')
 import random as rnd
 import time as stime
@@ -917,11 +919,11 @@ class MLRegressorStrategy:
 
 market_start_time = pd.Timestamp("09:30:00").time()
 market_end_time = pd.Timestamp("16:00:00").time()
+enter_on_close = True
 
 
 def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test=1,
-                             commission=0.0, slippage=0.0, position_value=100000, quiet=0,
-                             enter_on_close=False):
+                             commission=0.0, slippage=0.0, position_value=100000, quiet=0):
     equity_curve = np.zeros(len(data))
     trades = []
     current_profit = 0
@@ -946,7 +948,7 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
 
         action, confidence = strategy.next(idx, data)
 
-        if enter_on_close:
+        if system.enter_on_close:
             entry_price = data.iloc[idx-1]['Close']
         else:
             entry_price = data.iloc[idx]['Open']
@@ -970,9 +972,9 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
                 'pos': action,
                 'conf': confidence,
                 'shares': shares,
-                'entry_datetime': data.index[idx-1] if enter_on_close else data.index[idx],
+                'entry_datetime': data.index[idx-1] if system.enter_on_close else data.index[idx],
                 'exit_datetime': data.index[idx],
-                'entry_bar': idx-1 if enter_on_close else idx,
+                'entry_bar': idx-1 if system.enter_on_close else idx,
                 'exit_bar': idx,
                 'entry_price': entry_price,
                 'exit_price': exit_price,
@@ -1251,14 +1253,24 @@ def get_X(data):
 def get_y(data):
     """ Return dependent variable y """
     if regression:
-        y = (data.Close - data.Open).astype(np.float32)
+        if system.enter_on_close:
+            y = (data.Close - data.Close.shift(1)).astype(np.float32)
+        else:
+            y = (data.Close - data.Open).astype(np.float32)
         return y
     else:
         if not multiclass:
-            y = ((data.Close - data.Open) < 0).astype(np.int32)  # False = 0, so class 0, True = 1, so class 1
+            if system.enter_on_close:
+                y = ((data.Close - data.Close.shift(1)) < 0).astype(np.int32)  # False = 0, so class 0, True = 1, so class 1
+            else:
+                y = ((data.Close - data.Open) < 0).astype(
+                    np.int32)  # False = 0, so class 0, True = 1, so class 1
             return y
         else:
-            move = (data.Close - data.Open).astype(np.float32)
+            if system.enter_on_close:
+                move = (data.Close - data.Close.shift(1)).astype(np.float32)
+            else:
+                move = (data.Close - data.Open).astype(np.float32)
 
             y = np.zeros_like(move, dtype=np.int32)
 
