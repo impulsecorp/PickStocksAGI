@@ -927,9 +927,9 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
     current_profit = 0
 
     if quiet:
-        theiter = range(0, len(data)-1)
+        theiter = range(1, len(data))
     else:
-        theiter = tqdm(range(0, len(data)-1))
+        theiter = tqdm(range(1, len(data)))
     for idx in theiter:
         current_time = data.index[idx].time()
         if not data.daily:
@@ -947,10 +947,10 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
         action, confidence = strategy.next(idx, data)
 
         if enter_on_close:
-            entry_price = data.iloc[idx]['Close']
+            entry_price = data.iloc[idx-1]['Close']
         else:
-            entry_price = data.iloc[idx+1]['Open']
-        exit_price = data.iloc[idx+1]['Close']
+            entry_price = data.iloc[idx]['Open']
+        exit_price = data.iloc[idx]['Close']
 
         shares = int(position_value / entry_price)
 
@@ -970,16 +970,16 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
                 'pos': action,
                 'conf': confidence,
                 'shares': shares,
-                'entry_datetime': data.index[idx] if enter_on_close else data.index[idx],
-                'exit_datetime': data.index[idx+1],
-                'entry_bar': idx if enter_on_close else idx+1,
-                'exit_bar': idx+1,
+                'entry_datetime': data.index[idx-1] if enter_on_close else data.index[idx],
+                'exit_datetime': data.index[idx],
+                'entry_bar': idx-1 if enter_on_close else idx,
+                'exit_bar': idx,
                 'entry_price': entry_price,
                 'exit_price': exit_price,
                 'profit': profit
             })
 
-    return equity_curve[0:-1], *compute_stats(data, trades)
+    return equity_curve, *compute_stats(data, trades)
 
 
 def backtest_strategy_multi(strategy, data_list, skip_train=1, skip_val=0, skip_test=1,
