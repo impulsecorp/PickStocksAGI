@@ -28,14 +28,14 @@ from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, E
 from xgboost import XGBClassifier, XGBRegressor
 from lightgbm import LGBMClassifier, LGBMRegressor
 from catboost import CatBoostClassifier, CatBoostRegressor
-from hyperopt import fmin, hp, rand, tpe
+# from hyperopt import fmin, hp, rand, tpe
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.preprocessing import StandardScaler
 from gplearn.genetic import SymbolicRegressor
-from imblearn.over_sampling import SMOTE
+# from imblearn.over_sampling import SMOTE
 from copy import deepcopy
-from deap import base, creator, tools, algorithms
+# from deap import base, creator, tools, algorithms
 from joblib import Parallel, delayed
 from sklearn.model_selection import train_test_split
 from empyrical import sortino_ratio, omega_ratio, sharpe_ratio, calmar_ratio, stability_of_timeseries
