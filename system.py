@@ -985,7 +985,7 @@ def backtest_strategy_single(strategy, data, skip_train=1, skip_val=0, skip_test
                 'profit': profit
             })
 
-    return equity_curve, *compute_stats(data, trades)
+    return equity_curve[0:-1], *compute_stats(data, trades)
 
 
 def backtest_strategy_multi(strategy, data_list, skip_train=1, skip_val=0, skip_test=1,
