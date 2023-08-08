@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import tsfel as ts
+# import tsfel as ts
 from tqdm.notebook import tqdm
 import pandas_ta as ta
 import uuid
