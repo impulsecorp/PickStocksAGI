@@ -673,13 +673,16 @@ def train_clf_ensemble(clf_classes, data, ensemble_size=1, time_window_size=1, n
     scaler = None
     if scale_data and not (time_window_size > 1):
         scaler = StandardScaler()
-        Xt = scaler.fit_transform(X)
+        try:
+            Xt = scaler.fit_transform(X)
+        except:
+            Xt = X
     else:
         Xt = X
-    if balance_data and not (time_window_size > 1):
-        # Apply SMOTE oversampling to balance the training data
-        sm = SMOTE(random_state=newseed())
-        Xt, y = sm.fit_resample(Xt, y)
+    # if balance_data and not (time_window_size > 1):
+    #     # Apply SMOTE oversampling to balance the training data
+    #     sm = SMOTE(random_state=newseed())
+    #     Xt, y = sm.fit_resample(Xt, y)
 
     # Create ensemble classifier
     ensemble = VotingClassifier(estimators=clfs, n_jobs=n_jobs, voting='soft')
