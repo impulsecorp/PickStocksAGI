@@ -751,10 +751,10 @@ def train_classifier(clf_class, data, quiet=0, time_window_size=1, **kwargs):
         Xt = scaler.fit_transform(X)
     else:
         Xt = X
-    if balance_data and not (time_window_size > 1):
-        # Apply SMOTE oversampling to balance the training data
-        sm = SMOTE(random_state=newseed())
-        Xt, y = sm.fit_resample(Xt, y)
+    # if balance_data and not (time_window_size > 1):
+    #     # Apply SMOTE oversampling to balance the training data
+    #     sm = SMOTE(random_state=newseed())
+    #     Xt, y = sm.fit_resample(Xt, y)
 
     if not quiet:
         print('Data collected.')
