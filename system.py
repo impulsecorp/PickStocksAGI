@@ -38,7 +38,7 @@ from copy import deepcopy
 # from deap import base, creator, tools, algorithms
 from joblib import Parallel, delayed
 from sklearn.model_selection import train_test_split
-from empyrical import sortino_ratio, omega_ratio, sharpe_ratio, calmar_ratio, stability_of_timeseries
+# from empyrical import sortino_ratio, omega_ratio, sharpe_ratio, calmar_ratio, stability_of_timeseries
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
