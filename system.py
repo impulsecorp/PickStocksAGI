@@ -662,9 +662,12 @@ def train_clf_ensemble(clf_classes, data, ensemble_size=1, time_window_size=1, n
     for enss in range(ensemble_size):
         for i, clf_class in enumerate(clf_classes):
             try:
-                clf = clf_class(random_state=newseed(), **kwargs)
+                clf = clf_class(random_state=newseed(), probability=True, **kwargs)
             except:
-                clf = clf_class(**kwargs)
+                try:
+                    clf = clf_class(random_state=newseed(), **kwargs)
+                except:
+                    clf = clf_class(**kwargs)
             clfs.append((f'clf_{uuname()}', clf))
 
     N_TRAIN = int(data.shape[0] * train_set_end)
