@@ -1251,21 +1251,21 @@ def get_y(data):
     """ Return dependent variable y """
     if regression:
         if system.enter_on_close:
-            y = (data.Close - data.Close.shift(1)).astype(np.float32)
+            y = (data.Close.shift(-1) - data.Close).astype(np.float32)
         else:
             y = (data.Close - data.Open).astype(np.float32)
         return y
     else:
         if not multiclass:
             if system.enter_on_close:
-                y = ((data.Close - data.Close.shift(1)) < 0).astype(np.int32)  # False = 0, so class 0, True = 1, so class 1
+                y = ((data.Close.shift(-1) - data.Close) < 0).astype(np.int32)  # False = 0, so class 0, True = 1, so class 1
             else:
                 y = ((data.Close - data.Open) < 0).astype(
                     np.int32)  # False = 0, so class 0, True = 1, so class 1
             return y
         else:
             if system.enter_on_close:
-                move = (data.Close - data.Close.shift(1)).astype(np.float32)
+                move = (data.Close.shift(-1) - data.Close).astype(np.float32)
             else:
                 move = (data.Close - data.Open).astype(np.float32)
 
