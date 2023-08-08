@@ -811,13 +811,14 @@ def confidence_from_softmax(softmax_array):
 
 
 class MLClassifierStrategy:
-    def __init__(self, clf, feature_columns, scaler, min_confidence=0.0, window_size=1, reverse=False):
+    def __init__(self, clf, feature_columns, scaler, min_confidence=0.0, window_size=1, use_proba=False, reverse=False):
         self.clf = clf
         self.feature_columns = feature_columns
         self.min_confidence = min_confidence
         self.scaler = scaler
         self.reverse = reverse
         self.window_size = window_size
+        self.use_proba = use_proba
 
     def next(self, idx, data):
         if not hasattr(self, 'datafeats'):
@@ -837,22 +838,25 @@ class MLClassifierStrategy:
         else:
             features = window_data
 
-        try:
-            if self.window_size > 1:
-                features = features.reshape(1, self.window_size, -1)
-                prediction_proba = self.clf.predict_proba(torch.tensor(features, dtype=torch.float32))
-            else:
-                try:
-                    prediction_proba = self.clf.predict_proba(features).reshape(-1)
-                except:
-                    prediction_proba = self.clf.predict_proba(pd.DataFrame(features.reshape(1,-1))).values[0]#
+        if self.use_proba:
+            try:
+                if self.window_size > 1:
+                    features = features.reshape(1, self.window_size, -1)
+                    prediction_proba = self.clf.predict_proba(torch.tensor(features, dtype=torch.float32))
+                else:
+                    try:
+                        prediction_proba = self.clf.predict_proba(features).reshape(-1)
+                    except:
+                        prediction_proba = self.clf.predict_proba(pd.DataFrame(features.reshape(1,-1))).values[0]#
 
-            class_label = np.argmax(prediction_proba)
-            conf = confidence_from_softmax(prediction_proba)
-        except:
+                class_label = np.argmax(prediction_proba)
+                conf = confidence_from_softmax(prediction_proba)
+            except:
+                class_label = self.clf.predict(features).reshape(-1)
+                conf = 1.0
+        else:
             class_label = self.clf.predict(features).reshape(-1)
             conf = 1.0
-
 
         if conf >= self.min_confidence:
             if not self.reverse:
