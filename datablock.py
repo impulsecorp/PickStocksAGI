@@ -554,11 +554,11 @@ def procdata_llm(ddd, use_forex=False, double_underscore=True, cut_first_N=-1, w
             data.index = dindex
         data.daily = daily
 
-    open_ = data.open#.shift(1)
-    high = data.high#.shift(1)
-    low = data.low#.shift(1)
-    close = data.close#.shift(1)
-    if not use_forex: volume = data.volume#.shift(1)
+    open_ = data.open.shift(-1)
+    high = data.high.shift(-1)
+    low = data.low.shift(-1)
+    close = data.close.shift(-1)
+    if not use_forex: volume = data.volume.shift(-1)
 
     if not use_forex:
         data = data.rename({'open': 'X' + uchar + 'Open',
